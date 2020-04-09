@@ -63,11 +63,6 @@ export default function EnhancedTable() {
     const [open, setOpen] = useState(false);
     const rows = [];
 
-    const handleClickOpen = () => {
-        setOpen(true);
-        setSelected([]);
-    };
-
     useEffect(() => {
         api.get('pecas', {}).then(response => {
             setPecas(response.data);
@@ -250,6 +245,19 @@ export default function EnhancedTable() {
             alert('Erro ao deletar a peça');
         }
     }
+
+    let pecasData;
+
+    function handleModalClickOpen(codigo='') {
+        pecasData = '';
+        if (codigo !== '' && selected) {
+            api.get(`pecas/${codigo}`).then(response => {
+                setSelected([]);
+                pecasData = response.data;
+            });
+        }
+        setOpen(true);
+    }
     
     const EnhancedTableToolbar = props => {
         const classes = useToolbarStyles();
@@ -264,7 +272,7 @@ export default function EnhancedTable() {
                 {numSelected > 0 ? (
                     <div style={{minWidth: '96px'}}>
                         <Tooltip title="Editar">
-                            <IconButton aria-label="edit" onClick={handleClickOpen}>
+                            <IconButton aria-label="edit" onClick={() => handleModalClickOpen(selected)}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
@@ -277,7 +285,7 @@ export default function EnhancedTable() {
                 ) : (
                     <div>
                         <Tooltip title="Incluir">
-                            <IconButton aria-label="include" onClick={handleClickOpen}>
+                            <IconButton aria-label="include" onClick={() => handleModalClickOpen()}>
                                 <AddCircleIcon color="secondary" />
                             </IconButton>
                         </Tooltip>
@@ -286,6 +294,7 @@ export default function EnhancedTable() {
                             pecas={pecas}
                             open={open}
                             setOpen={setOpen}
+                            pecasData={pecasData}
                         />
                     </div>
                 )}

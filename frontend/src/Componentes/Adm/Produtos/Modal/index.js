@@ -62,6 +62,8 @@ export default function CustomizedDialogs(props) {
     const [descricao, setDescricao] = useState('');
     const [foto, setFoto] = useState('');
     const {pecas, setPecas, open, setOpen} = props;
+    let {pecasData} = props;
+    console.log(pecasData);
 
     const handleClose = () => {
         setOpen(false);

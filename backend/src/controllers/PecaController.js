@@ -7,6 +7,13 @@ module.exports = {
         return response.json(pecas);
     },
 
+    async edit(request, response) {
+        const { codigo } = request.params;
+        const pecas = await connection('pecas').select('*').where('codigo', codigo);
+
+        return response.json(pecas);
+    },
+
     async create(request, response) {
         const {
             codigo,
