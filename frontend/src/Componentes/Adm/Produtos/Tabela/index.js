@@ -20,6 +20,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import api from '../../../../services/api.js';
 
@@ -59,7 +60,13 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [pecas, setPecas] = useState([]);
+    const [open, setOpen] = useState(false);
     const rows = [];
+
+    const handleClickOpen = () => {
+        setOpen(true);
+        setSelected([]);
+    };
 
     useEffect(() => {
         api.get('pecas', {}).then(response => {
@@ -257,18 +264,30 @@ export default function EnhancedTable() {
                 {numSelected > 0 ? (
                     <div style={{minWidth: '96px'}}>
                         <Tooltip title="Editar">
-                            <IconButton aria-label="edit">
+                            <IconButton aria-label="edit" onClick={handleClickOpen}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Excluir" onClick={() => handleDeletePecas(selected)}>
-                            <IconButton aria-label="delete">
+                        <Tooltip title="Excluir">
+                            <IconButton aria-label="delete" onClick={() => handleDeletePecas(selected)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
                     </div>
                 ) : (
-                    <Modal setPecas={setPecas} pecas={pecas} />
+                    <div>
+                        <Tooltip title="Incluir">
+                            <IconButton aria-label="include" onClick={handleClickOpen}>
+                                <AddCircleIcon color="secondary" />
+                            </IconButton>
+                        </Tooltip>
+                        <Modal
+                            setPecas={setPecas}
+                            pecas={pecas}
+                            open={open}
+                            setOpen={setOpen}
+                        />
+                    </div>
                 )}
                 {numSelected > 0 ? (
                         <Typography className={classes.title} color="inherit" variant="subtitle1">
