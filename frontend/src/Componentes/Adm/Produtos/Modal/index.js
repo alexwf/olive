@@ -54,6 +54,8 @@ const DialogActions = withStyles(theme => ({
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
+    const {pecas, setPecas, open, setOpen, modal, setModal} = props;
+
     const [codigo, setCodigo] = useState('');
     const [nome, setNome] = useState('');
     const [categoria, setCategoria] = useState('');
@@ -61,9 +63,6 @@ export default function CustomizedDialogs(props) {
     const [quantidade, setQuantidade] = useState('');
     const [descricao, setDescricao] = useState('');
     const [foto, setFoto] = useState('');
-    const {pecas, setPecas, open, setOpen} = props;
-    let {pecasData} = props;
-    console.log(pecasData);
 
     const handleClose = () => {
         setOpen(false);
@@ -74,7 +73,12 @@ export default function CustomizedDialogs(props) {
         setQuantidade('');
         setDescricao('');
         setFoto('');
+        setModal([]);
     };
+
+    if (modal !== []) {
+        console.log(modal);
+    }
 
     async function handleRegister(e) {
         e.preventDefault();

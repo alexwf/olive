@@ -60,6 +60,7 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [pecas, setPecas] = useState([]);
+    const [modal, setModal] = useState([]);
     const [open, setOpen] = useState(false);
     const rows = [];
 
@@ -246,14 +247,11 @@ export default function EnhancedTable() {
         }
     }
 
-    let pecasData;
-
-    function handleModalClickOpen(codigo='') {
-        pecasData = '';
+    async function handleModalClickOpen(codigo='') {
         if (codigo !== '' && selected) {
-            api.get(`pecas/${codigo}`).then(response => {
+            await api.get(`pecas/${codigo}`).then(response => {
                 setSelected([]);
-                pecasData = response.data;
+                setModal(response.data);
             });
         }
         setOpen(true);
@@ -294,7 +292,8 @@ export default function EnhancedTable() {
                             pecas={pecas}
                             open={open}
                             setOpen={setOpen}
-                            pecasData={pecasData}
+                            modal={modal}
+                            setModal={setModal}
                         />
                     </div>
                 )}
